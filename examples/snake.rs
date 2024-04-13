@@ -1,3 +1,4 @@
+use std::time;
 use device_query::Keycode::{A, D, S, W};
 use terminal_game_engine_lib::*;
 
@@ -31,6 +32,7 @@ fn snake() {
     }
 
 
+    let mut latest = std::time::Instant::now();
 
     loop {
         // handle input
@@ -68,7 +70,9 @@ fn snake() {
 
         win.print_vec(&food, '*');
 
-        println!("{}", tail_len);
+        let time = time::Instant::now() - latest;
+        latest = time::Instant::now();
+        println!("{:?}", time);
 
         if dir != Vec2::ZERO {history.push(head_pos);}
 
