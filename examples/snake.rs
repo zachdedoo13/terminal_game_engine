@@ -13,16 +13,22 @@ fn snake() {
 
     let mut win = Window::new(20, 20);
     let mut input = Input::new(true);
-    win.set_color(Color::RED);
     win.border();
 
 
 
     let mut head_pos = Vec2::middle_of(Vec2::ZERO, win.size);
     let mut dir = Vec2::ZERO;
-    let mut tail_len = 6;
+    let mut tail_len = 3;
 
-    let mut history: Vec<Vec2> = vec![head_pos.clone(); tail_len];
+    let mut history: Vec<Vec2> = vec![Vec2::ZERO; tail_len];
+
+    let mut points = 0;
+
+    let mut food = Vec2::random_range(Vec2::ZERO, win.size);
+    while food == head_pos {
+        food = Vec2::random_range(Vec2::ZERO, win.size);
+    }
 
 
 
@@ -43,21 +49,47 @@ fn snake() {
 
 
 
-        history.push(head_pos);
 
         if history.len() > tail_len {
             for point in history.iter().skip(history.len() - tail_len) {
+                if point == &food || head_pos == food{
+                    points += 1;
+                    tail_len += 1;
+                    food = spawn_food(&history, tail_len, win.size);
+                }
+                if point == &head_pos {
+                    kill()
+                }
                 win.print_vec(point, '#')
             }
         }
 
-        println!("{}", head_pos);
+        win.print_vec(&head_pos, '#');
+
+        win.print_vec(&food, '*');
+
+        println!("{}", tail_len);
+
+        if dir != Vec2::ZERO {history.push(head_pos);}
 
 
         // flush updates and wait
         win.flush();
-        wait(10);
+        wait(100);
     }
+}
+
+
+fn spawn_food(history: &Vec<Vec2>, tail_len:usize, size : Vec2) -> Vec2 {
+    let mut food = Vec2::random_range(Vec2::ZERO, size);
+    if history.len() > tail_len {
+        for point in history.iter().skip(history.len() - tail_len) {
+            if point == &food {
+                food = spawn_food(history, tail_len, size);
+            }
+        }
+    }
+    food
 }
 
 

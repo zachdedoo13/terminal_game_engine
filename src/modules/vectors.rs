@@ -7,7 +7,7 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
 
 
 #[allow(dead_code)]
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, Copy)]
 pub struct Vec2 {
     pub x : i32,
     pub y : i32,
@@ -129,5 +129,12 @@ impl Div for Vec2 {
 impl fmt::Display for Vec2 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "({}, {})", self.x, self.y)
+    }
+}
+
+impl PartialEq for Vec2 {
+    fn eq(&self, other: &Self) -> bool {
+        if (self.x == other.x) && (self.y == other.y) { return true }
+        false
     }
 }

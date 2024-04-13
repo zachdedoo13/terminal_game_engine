@@ -12,7 +12,7 @@ pub use modules::input::Input;
 pub use modules::window::Window;
 pub use modules::colors::Color;
 
-pub use modules::other::wait;
+pub use modules::other::*;
 
 
 

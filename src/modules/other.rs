@@ -5,3 +5,9 @@ use std::time::Duration;
 pub fn wait(mills:u64) {
     sleep(Duration::from_millis(mills))
 }
+
+#[allow(dead_code)]
+pub fn kill() {
+    println!("killed proses");
+    std::process::exit(0)
+}
