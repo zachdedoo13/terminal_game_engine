@@ -13,7 +13,7 @@ fn main() {
 fn snake() {
     // uses 0.2.1
 
-    let mut win = Window::new(20, 20);
+    let mut win = Window::new(80, 80);
     let mut input = Input::new(true);
     win.border();
 

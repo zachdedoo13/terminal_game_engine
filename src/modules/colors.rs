@@ -1,13 +1,31 @@
-pub struct Color;
 
-#[allow(dead_code)]
+
+
+
+#[derive(PartialEq)]
+#[derive(Clone)]
+pub enum Color {
+    Red,
+    Green,
+    Yellow,
+    Blue,
+    Magenta,
+    Cyan,
+    White,
+    Reset,
+}
+
 impl Color {
-    pub const RED: &'static str = "\x1b[31m";
-    pub const GREEN: &'static str = "\x1b[32m";
-    pub const YELLOW: &'static str = "\x1b[33m";
-    pub const BLUE: &'static str = "\x1b[34m";
-    pub const MAGENTA: &'static str = "\x1b[35m";
-    pub const CYAN: &'static str = "\x1b[36m";
-    pub const WHITE: &'static str = "\x1b[37m";
-    pub const RESET: &'static str = "\x1b[0m";
+    pub fn code(&self) -> &'static str {
+        match self {
+            Color::Red => "\x1b[31m",
+            Color::Green => "\x1b[32m",
+            Color::Yellow => "\x1b[33m",
+            Color::Blue => "\x1b[34m",
+            Color::Magenta => "\x1b[35m",
+            Color::Cyan => "\x1b[36m",
+            Color::White => "\x1b[37m",
+            Color::Reset => "\x1b[0m",
+        }
+    }
 }

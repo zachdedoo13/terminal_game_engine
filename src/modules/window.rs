@@ -1,6 +1,6 @@
 use std::io;
 use std::io::Write;
-use crate::modules::vectors::Vec2;
+use crate::modules::vectors::Vec2Int;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -11,7 +11,7 @@ pub struct Window<'a> {
     pub handle: io::StdoutLock<'a>,
     rows: i32,
     cols : i32,
-    pub size : Vec2,
+    pub size : Vec2Int,
     buffer: Vec<char>,
     o_buff: Vec<char>,
 }
@@ -38,7 +38,7 @@ impl Window<'_> {
         Self {
             stdout,
             handle,
-            size : Vec2::new(width, height),
+            size : Vec2Int::new(width, height),
             cols,
             rows,
             buffer: buffer.clone(),
@@ -94,10 +94,10 @@ impl Window<'_> {
     }
     // prints to buffer
 
-    pub fn print_vec(&mut self, pos:&Vec2, char:char) {
+    pub fn print_vec(&mut self, pos:&Vec2Int, char:char) {
         self.print(pos.x, pos.y, char)
     }
-    // prints to buffer from Vec2
+    // prints to buffer from Vec2Int
 
     pub fn print_at(&mut self, x:i32, y:i32, add:char) {
         let offset_x = 2;

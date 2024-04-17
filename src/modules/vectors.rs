@@ -8,13 +8,12 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
 
 #[allow(dead_code)]
 #[derive(Clone, Copy)]
-pub struct Vec2 {
+pub struct Vec2Int {
     pub x : i32,
     pub y : i32,
 }
 #[allow(dead_code)]
-impl Vec2 {
-
+impl Vec2Int {
     pub const ZERO: Self = Self { x: 0, y: 0 };
     pub const UP: Self = Self { x: 0, y: -1 };
     pub const DOWN: Self = Self { x: 0, y: 1 };
@@ -23,7 +22,7 @@ impl Vec2 {
 
     pub fn new(x:i32, y:i32) -> Self { Self { x, y, } }
 
-    pub fn random_range(lower:Vec2, upper:Vec2) -> Self {
+    pub fn random_range(lower: Vec2Int, upper: Vec2Int) -> Self {
         let mut rng = thread_rng();
 
         let x = rng.gen_range(lower.x..upper.x);
@@ -35,7 +34,7 @@ impl Vec2 {
         }
     }
 
-    pub fn middle_of(lower:Vec2, upper:Vec2) -> Self {
+    pub fn middle_of(lower: Vec2Int, upper: Vec2Int) -> Self {
         let fixed = upper - lower;
         Self {
             x : fixed.x / 2,
@@ -44,7 +43,7 @@ impl Vec2 {
     }
 
     pub fn input_vec(left:bool, right:bool, up:bool, down:bool, allow_diagonal:bool) -> Self {
-        let mut back = Vec2::ZERO;
+        let mut back = Vec2Int::ZERO;
 
         if left { back.x = -1; }
         else if right { back.x = 1; }
@@ -62,7 +61,7 @@ impl Vec2 {
 }
 
 // for +=
-impl AddAssign for Vec2 {
+impl AddAssign for Vec2Int {
     fn add_assign(&mut self, other: Self) {
         self.x += other.x;
         self.y += other.y;
@@ -70,7 +69,7 @@ impl AddAssign for Vec2 {
 }
 
 // for *=
-impl MulAssign for Vec2 {
+impl MulAssign for Vec2Int {
     fn mul_assign(&mut self, other: Self) {
         self.x *= other.x;
         self.y *= other.y;
@@ -78,7 +77,7 @@ impl MulAssign for Vec2 {
 }
 
 // for -=
-impl SubAssign for Vec2 {
+impl SubAssign for Vec2Int {
     fn sub_assign(&mut self, other: Self) {
         self.x -= other.x;
         self.y -= other.y;
@@ -86,7 +85,7 @@ impl SubAssign for Vec2 {
 }
 
 // for /=
-impl DivAssign for Vec2 {
+impl DivAssign for Vec2Int {
     fn div_assign(&mut self, other: Self) {
         self.x /= other.x;
         self.y /= other.y;
@@ -94,45 +93,45 @@ impl DivAssign for Vec2 {
 }
 
 // for -
-impl Sub for Vec2 {
-    type Output = Vec2;
+impl Sub for Vec2Int {
+    type Output = Vec2Int;
     fn sub(self, other: Self) -> Self {
-        Vec2::new(self.x - other.x, self.y - other.y)
+        Vec2Int::new(self.x - other.x, self.y - other.y)
     }
 }
 
 // for *
-impl Mul for Vec2 {
-    type Output = Vec2;
+impl Mul for Vec2Int {
+    type Output = Vec2Int;
     fn mul(self, other: Self) -> Self {
-        Vec2::new(self.x * other.x, self.y * other.y)
+        Vec2Int::new(self.x * other.x, self.y * other.y)
     }
 }
 
 // for +
-impl Add for Vec2 {
-    type Output = Vec2;
+impl Add for Vec2Int {
+    type Output = Vec2Int;
     fn add(self, other: Self) -> Self {
-        Vec2::new(self.x + other.x, self.y + other.y)
+        Vec2Int::new(self.x + other.x, self.y + other.y)
     }
 }
 
 // for /
-impl Div for Vec2 {
-    type Output = Vec2;
+impl Div for Vec2Int {
+    type Output = Vec2Int;
     fn div(self, other: Self) -> Self {
-        Vec2::new(self.x / other.x, self.y / other.y)
+        Vec2Int::new(self.x / other.x, self.y / other.y)
     }
 }
 
 // for printing
-impl fmt::Display for Vec2 {
+impl fmt::Display for Vec2Int {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "({}, {})", self.x, self.y)
     }
 }
 
-impl PartialEq for Vec2 {
+impl PartialEq for Vec2Int {
     fn eq(&self, other: &Self) -> bool {
         if (self.x == other.x) && (self.y == other.y) { return true }
         false

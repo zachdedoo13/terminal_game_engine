@@ -8,7 +8,7 @@ mod modules {
     pub(crate) mod vectors;
 }
 
-pub use modules::vectors::Vec2;
+pub use modules::vectors::Vec2Int;
 pub use modules::input::Input;
 pub use modules::window::Window;
 pub use modules::colors::Color;
@@ -17,7 +17,7 @@ pub use modules::colors::Color;
 pub use modules::other::*;
 
 
-pub use modules::window_test::ESC;
+pub use modules::window_test::TestWindow;
 
 
 
