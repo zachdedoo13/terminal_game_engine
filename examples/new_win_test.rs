@@ -1,0 +1,14 @@
+
+use terminal_game_engine_lib::*;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+fn main() {
+    let mut test = ESC::new();
+    test.clear();
+    test.set_color(Color::RED);
+    test.add_str("hello");
+    test.color_reset();
+    test.add_str("hello");
+    test.color_reset();
+    test.flush()
+}

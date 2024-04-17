@@ -1,4 +1,5 @@
 use std::time;
+use std::time::Duration;
 use device_query::Keycode::{A, D, S, W};
 use terminal_game_engine_lib::*;
 

@@ -1,7 +1,7 @@
 use terminal_game_engine_lib::*;
 
 fn main() {
-    let mut win = Window::new(50, 50);
+    let mut win = Window::new(135, 40);
     win.border();
     win.set_color(Color::RED);
 
