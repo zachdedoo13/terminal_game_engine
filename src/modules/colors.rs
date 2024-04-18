@@ -2,7 +2,7 @@
 
 
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Eq, Hash)]
 #[derive(Clone)]
 pub enum Color {
     Red,

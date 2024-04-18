@@ -7,9 +7,9 @@ use crate::{Color, Vec2Int};
 pub struct TestWindow<'a> {
     pub esc : ESC<'a>,
     pub size : Vec2Int,
-
     offset : Vec2Int,
 
+    // direct buffers
     point_buffer : Vec<Point>,
     past_buffer : Vec<Point>,
     clean_buffer : Vec<Point>,
@@ -26,11 +26,14 @@ impl TestWindow<'_> {
         // initialize the dimensions
         let offset = Vec2Int::new(2, 2);
         let (term_width, term_height) = terminal::size().unwrap();
-        let size = Vec2Int::new(min(max_width as i32, term_width as i32), min(max_height as i32, term_height as i32));
+        let size = Vec2Int::new(
+            min(max_width as i32, term_width as i32) - (3),
+            min(max_height as i32, term_height as i32) - (3),
+        );
 
         // make clean buffer
         let mut clean_buffer = vec![];
-        for _ in 0..(size.x * size.y) {
+        for _ in 0..(size.x * (size.y + 1)) {
             clean_buffer.push(Point {
                 char : ' ',
                 color : Color::Reset,
@@ -47,26 +50,38 @@ impl TestWindow<'_> {
         }
     }
 
-    pub fn add_point(&mut self, pos: Vec2Int, char: char, color: Color) {
-        self.point_buffer[((self.size.x * pos.y) + pos.x) as usize] = (Point {
+    pub fn border(&mut self) {
+        // top bottom
+        for x in 0..self.size.x + 3 {
+            self.esc.goto_add_char(x, 0, '#');
+            self.esc.goto_add_char(x, self.size.y + 3, '#');
+        }
+        // right left
+        for y in 0..self.size.y + 3 {
+            self.esc.goto_add_char(0, y, '#');
+            self.esc.goto_add_char(self.size.x + 3, y, '#');
+        }
+    }
+
+    pub fn add_point(&mut self, pos: Vec2Int, color: Color, char: char) {
+        self.point_buffer[((self.size.x * ((self.size.y) - pos.y)) + pos.x) as usize] = (Point {
             char,
             color,
         });
     }
 
     pub fn render(&mut self) {
-        let mut i : usize = 0;
-        for y in 0..self.size.y {
-            for x in 0..self.size.x {
-                let new_point = &self.point_buffer[i];
-                let old_point = &self.past_buffer[i];
-                if ! (new_point == old_point) {
-                    self.esc.goto_add_char(x + self.offset.x, y + self.offset.y, new_point.char);
-                    self.esc.set_color(&new_point.color);
-                }
-                i += 1;
+        for i in 0..self.point_buffer.len() {
+            let new = &self.point_buffer[i];
+            let old = &self.past_buffer[i];
+            if ! (new == old) {
+                let x = (i % self.size.x as usize) as i32;
+                let y = (i / self.size.x as usize) as i32;
+                self.esc.set_color(&new.color);
+                self.esc.goto_add_char(x + self.offset.x, y + self.offset.y, new.char);
             }
         }
+
         self.esc.flush();
 
         self.past_buffer = self.point_buffer.clone();
@@ -81,7 +96,7 @@ impl TestWindow<'_> {
         self.esc.goto(x, y);
     }
 
-    pub fn any_code(&mut self, code: &str) {
+    fn any_code(&mut self, code: &str) {
         self.esc.any_code(code);
     }
 }
