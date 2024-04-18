@@ -1,4 +1,4 @@
-use std::time::Instant;
+use std::time::{Duration, Instant};
 use terminal_game_engine_lib::*;
 use crossterm::terminal;
 
@@ -13,7 +13,7 @@ fn test() {
 
     let mut pos = Vec2Int::ZERO;
 
-    let size = 5; // size of the square
+    let size = 20; // size of the square
     let mut pos = Vec2Int::ZERO; // initial position
     let mut dir = Vec2Int::new(1, 1); // initial direction
 
@@ -47,12 +47,16 @@ fn test() {
             dir.y = -dir.y;
         }
 
-        let et = Instant::now();
 
         win.goto(0, 0);
-        let ms = (et - st).as_micros() as f64;
-        print!("fps : {:?}     ", (1_000_000.0 / ms) as i32);
+
+        let et = Instant::now();
+        let ms = (et - st).as_millis() as f64;
+        print!("fps : {:?}     ", (1000f64 / ms) as i32);
+
         wait(0);
+
+
 
         joe = !joe;
 
