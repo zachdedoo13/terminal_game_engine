@@ -10,6 +10,7 @@ pub struct TestWindow<'a> {
     offset : Vec2Int,
 
     // direct buffers
+    current_color : Color,
     point_buffer : Vec<Point>,
     past_buffer : Vec<Point>,
     clean_buffer : Vec<Point>,
@@ -45,26 +46,32 @@ impl TestWindow<'_> {
             size,
             point_buffer: clean_buffer.clone(),
             past_buffer: clean_buffer.clone(),
+            current_color : Color::Reset,
             clean_buffer,
             offset,
         }
     }
 
-    pub fn border(&mut self) {
+    pub fn border(&mut self, color : Color) {
         // top bottom
-        for x in 0..self.size.x + 3 {
+        self.esc.set_color(&color);
+        for x in 0..self.size.x + 4 {
             self.esc.goto_add_char(x, 0, '#');
-            self.esc.goto_add_char(x, self.size.y + 3, '#');
+            self.esc.goto_add_char(x, self.size.y + 4, '#');
         }
         // right left
-        for y in 0..self.size.y + 3 {
+        for y in 0..self.size.y + 4 {
             self.esc.goto_add_char(0, y, '#');
-            self.esc.goto_add_char(self.size.x + 3, y, '#');
+            self.esc.goto_add_char(self.size.x + 4, y, '#');
         }
     }
 
     pub fn add_point(&mut self, pos: Vec2Int, color: Color, char: char) {
-        self.point_buffer[((self.size.x * ((self.size.y) - pos.y)) + pos.x) as usize] = (Point {
+        if pos.x < 0 || pos.x >= self.size.x || pos.y < 0 || pos.y >= self.size.y {
+            return;
+        }
+        let index = (self.size.x * ((self.size.y) - pos.y)) + pos.x;
+        self.point_buffer[index as usize] = (Point {
             char,
             color,
         });
@@ -77,7 +84,10 @@ impl TestWindow<'_> {
             if ! (new == old) {
                 let x = (i % self.size.x as usize) as i32;
                 let y = (i / self.size.x as usize) as i32;
-                self.esc.set_color(&new.color);
+                let color = &new.color;
+                if ! (&self.current_color == color) {
+                    self.esc.set_color(color);
+                }
                 self.esc.goto_add_char(x + self.offset.x, y + self.offset.y, new.char);
             }
         }

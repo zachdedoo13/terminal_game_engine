@@ -5,10 +5,10 @@ mod modules {
     pub(crate) mod input;
     pub(crate) mod colors;
     pub(crate) mod other;
-    pub(crate) mod vectors;
+    pub(crate) mod vec2;
 }
 
-pub use modules::vectors::Vec2Int;
+pub use modules::vec2::{Vec2Int, Vec2Float};
 pub use modules::input::Input;
 pub use modules::window::Window;
 pub use modules::colors::Color;
